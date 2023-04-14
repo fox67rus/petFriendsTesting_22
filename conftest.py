@@ -1,6 +1,6 @@
-from datetime import datetime
-from module21.petFriendsTesting.tests.test_pet_friends import pf, valid_password, valid_email
 import pytest
+from datetime import datetime
+from tests.test_pet_friends import pf, valid_password, valid_email
 
 
 # После прохождения теста на жёстком диске появляется файл log.txt, в котором две секции:
@@ -17,11 +17,13 @@ import pytest
 # В логах секция ответа содержит код ответа и тело ответа.
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture()
 def get_key():
     # Запрашиваем ключ api и сохраняем в переменную auth_key
-    _, auth_key = pf.get_api_key(valid_email, valid_password)
-    return auth_key
+    status, key = pf.get_api_key(valid_email, valid_password)
+    assert status == 200
+    assert 'key' in key
+    return key
 
 @pytest.fixture(autouse=True)
 def time_delta():
