@@ -1,0 +1,9 @@
+# PyCharm
+.idea/
+/.env
+__pycache__
+
+# Confidencial
+config.py
+
+
