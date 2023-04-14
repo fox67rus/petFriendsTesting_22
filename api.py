@@ -181,3 +181,6 @@ class PetFriends:
             result = res.text
 
         return status, result
+
+
+pf = PetFriends()
