@@ -1,10 +1,8 @@
 import pytest
 
-from api import PetFriends
+from api import pf
 from config import valid_email, valid_password
 import os
-
-pf = PetFriends()
 
 
 @pytest.mark.get
@@ -136,6 +134,7 @@ def test_successful_add_pets_correct_photo(get_key, pet_photo='images/dog.jpg'):
 
 
 # Негативные тесты
+@pytest.mark.negative
 @pytest.mark.get
 def test_get_api_key_for_invalid_user(email='free-user@mymail.com', password='pass'):
     """
@@ -172,6 +171,7 @@ def test_add_new_pet_without_photo_negative_age(get_key, name='Гав', animal_t
     assert status == 400
 
 
+@pytest.mark.negative
 @pytest.mark.put
 def test_unsuccessful_update_another_user_pet_info(get_key, name='Ниндзя', animal_type='НЛО', age=999):
     """Проверяем возможность обновления информации о питомце другого пользователя. Ожидается отказ доступа"""
@@ -192,6 +192,7 @@ def test_unsuccessful_update_another_user_pet_info(get_key, name='Ниндзя',
         raise Exception('Список питомцев пуст')
 
 
+@pytest.mark.negative
 @pytest.mark.put
 @pytest.mark.skip(reason="Баг в продукте")
 def test_unsuccessful_update_self_pet_info_with_empty_type(get_key, name='Кото пёс', animal_type=' ', age=3):
@@ -213,6 +214,7 @@ def test_unsuccessful_update_self_pet_info_with_empty_type(get_key, name='Кот
         raise Exception('Список питомцев пуст')
 
 
+@pytest.mark.negative
 @pytest.mark.delete
 @pytest.mark.skip(reason="Баг в продукте")
 def test_unsuccessful_delete_another_user_pet(get_key):
@@ -233,6 +235,7 @@ def test_unsuccessful_delete_another_user_pet(get_key):
     assert status != 200
 
 
+@pytest.mark.negative
 @pytest.mark.post
 @pytest.mark.skip(reason="Баг в продукте")
 def test_add_new_pet_without_photo_empty_name(get_key, name='', animal_type='', age=''):
@@ -247,8 +250,9 @@ def test_add_new_pet_without_photo_empty_name(get_key, name='', animal_type='', 
     assert status != 200
 
 
+@pytest.mark.negative
 @pytest.mark.post
-@pytest.mark.skip(reason="Баг в продукте - <ссылка>")
+@pytest.mark.skip(reason="Баг в продукте - https://petfriends.skillfactory.ru/my_pets")
 def test_add_new_pet_without_photo_long_animal_type(get_key, name='Длиннопородный', age='1'):
     """
     Простое добавление питомца (без фото): порода - текст более 255 символов
