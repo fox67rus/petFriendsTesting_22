@@ -1,7 +1,7 @@
 import pytest
 
-from module22.petFriendsTesting_22.api import PetFriends
-from module22.petFriendsTesting_22.config import valid_email, valid_password
+from api import PetFriends
+from config import valid_email, valid_password
 import os
 
 pf = PetFriends()
