@@ -65,9 +65,13 @@ class PetFriends:
                 'pet_photo': (pet_photo, open(pet_photo, 'rb'), 'image/jpeg')
             })
 
-        headers = {'auth_key': auth_key['key'], 'Content-Type': data.content_type}
+        headers = {
+            'auth_key': auth_key['key'],
+            'Content-Type': data.content_type
+        }
 
         res = requests.post(self.base_url + 'api/pets', headers=headers, data=data)
+
         status = res.status_code
 
         try:
@@ -87,8 +91,8 @@ class PetFriends:
         headers = {'auth_key': auth_key['key']}
 
         res = requests.delete(self.base_url + 'api/pets/' + pet_id, headers=headers)
-        status = res.status_code
 
+        status = res.status_code
         try:
             result = res.json()
         except json.decoder.JSONDecodeError:
@@ -109,8 +113,8 @@ class PetFriends:
         }
 
         res = requests.put(self.base_url + 'api/pets/' + pet_id, headers=headers, data=data)
-        status = res.status_code
 
+        status = res.status_code
         try:
             result = res.json()
         except json.decoder.JSONDecodeError:
@@ -134,8 +138,8 @@ class PetFriends:
         headers = {'auth_key': auth_key['key'], 'Content-Type': data.content_type}
 
         res = requests.post(self.base_url + '/api/create_pet_simple', headers=headers, data=data)
-        status = res.status_code
 
+        status = res.status_code
         try:
             result = res.json()
         except json.decoder.JSONDecodeError:
@@ -163,11 +167,14 @@ class PetFriends:
                 'pet_photo': (pet_photo, open(pet_photo, 'rb'), image_type)
             })
 
-        headers = {'auth_key': auth_key['key'], 'Content-Type': data.content_type}
+        headers = {
+            'auth_key': auth_key['key'],
+            'Content-Type': data.content_type
+        }
 
         res = requests.post(self.base_url + '/api/pets/set_photo/' + pet_id, headers=headers, data=data)
-        status = res.status_code
 
+        status = res.status_code
         try:
             result = res.json()
         except json.decoder.JSONDecodeError:
