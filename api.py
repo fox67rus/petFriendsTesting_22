@@ -24,6 +24,7 @@ class PetFriends:
         }
         res = requests.get(self.base_url + 'api/key', headers=headers)
         status = res.status_code
+        response_headers = res.headers
 
         try:
             result = res.json()
@@ -31,7 +32,7 @@ class PetFriends:
         except json.decoder.JSONDecodeError:
             result = res.text
 
-        return status, result
+        return status, result, response_headers
 
     def get_list_of_pets(self, auth_key: json, filter: str = '') -> json:
         """Метод делает запрос к API сервера с ключом аутентификации в заголовках
@@ -76,13 +77,14 @@ class PetFriends:
         res = requests.post(self.base_url + 'api/pets', headers=headers, data=data)
 
         status = res.status_code
+        response_headers = res.headers
 
         try:
             result = res.json()
         except json.decoder.JSONDecodeError:
             result = res.text
 
-        return status, result
+        return status, result, response_headers
 
     def delete_pet(self, auth_key: json, pet_id: str) -> json:
         """
@@ -96,11 +98,12 @@ class PetFriends:
         res = requests.delete(self.base_url + 'api/pets/' + pet_id, headers=headers)
 
         status = res.status_code
+        response_headers = res.headers
         try:
             result = res.json()
         except json.decoder.JSONDecodeError:
             result = res.text
-        return status, result
+        return status, result, response_headers
 
     def update_pet_info(self, auth_key: json, pet_id: str, name: str, animal_type: str, age: int) -> json:
         """
@@ -118,12 +121,13 @@ class PetFriends:
         res = requests.put(self.base_url + 'api/pets/' + pet_id, headers=headers, data=data)
 
         status = res.status_code
+        response_headers = res.headers
         try:
             result = res.json()
         except json.decoder.JSONDecodeError:
             result = res.text
 
-        return status, result
+        return status, result, response_headers
 
     def add_new_pet_without_photo(self, auth_key: json, name: str, animal_type: str, age: str) -> json:
         """
@@ -143,12 +147,13 @@ class PetFriends:
         res = requests.post(self.base_url + '/api/create_pet_simple', headers=headers, data=data)
 
         status = res.status_code
+        response_headers = res.headers
         try:
             result = res.json()
         except json.decoder.JSONDecodeError:
             result = res.text
 
-        return status, result
+        return status, result, response_headers
 
     def add_pets_photo(self, auth_key: json, pet_photo: str, pet_id: str) -> json:
         """
@@ -178,12 +183,13 @@ class PetFriends:
         res = requests.post(self.base_url + '/api/pets/set_photo/' + pet_id, headers=headers, data=data)
 
         status = res.status_code
+        response_headers = res.headers
         try:
             result = res.json()
         except json.decoder.JSONDecodeError:
             result = res.text
 
-        return status, result
+        return status, result, response_headers
 
 
 pf = PetFriends()
