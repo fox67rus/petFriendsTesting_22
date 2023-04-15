@@ -2,14 +2,16 @@
 import pytest
 
 from api import pf
+from config import generate_string, russian_chars, chinese_chars, special_chars
 
 
 @pytest.mark.get
-def test_get_all_pets_with_valid_key(get_key, filter=''):
-    """ Проверяем что запрос всех питомцев возвращает не пустой список.
-        Для этого сначала получаем api ключ и сохраняем в переменную auth_key. Далее используя этого ключ
-        запрашиваем список всех питомцев и проверяем что список не пустой.
-        Доступное значение параметра filter - 'my_pets' либо ''
+@pytest.mark.parametrize("filter", ['', 'my_pets'], ids=['all pets', 'only my pets'])
+def test_get_all_pets_with_valid_key(get_key, filter):
+    """
+    Проверяем что запрос всех питомцев на сайте или питомцев пользователя возвращает не пустой список и статус код 200.
+    Заголовки ответа содержат обязательные значения: Content-type: aplication/json или application/xml
+    Используется фикстура параметризации с позитивными сценариями.
     """
     status, result = pf.get_list_of_pets(get_key, filter)
 
