@@ -2,7 +2,6 @@
 import pytest
 
 from api import pf
-from config import generate_string, russian_chars, chinese_chars, special_chars
 
 
 @pytest.mark.get
