@@ -47,11 +47,12 @@ class PetFriends:
         res = requests.get(self.base_url + 'api/pets', headers=headers, params=filter)
 
         status = res.status_code
+        response_headers = res.headers
         try:
             result = res.json()
         except json.decoder.JSONDecodeError:
             result = res.text
-        return status, result
+        return status, result, response_headers
 
     def add_new_pet(self, auth_key: json, name: str, animal_type: str, age: str, pet_photo: str) -> json:
         """

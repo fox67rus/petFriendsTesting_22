@@ -12,7 +12,9 @@ def test_get_all_pets_with_valid_key(get_key, filter):
     Заголовки ответа содержат обязательные значения: Content-type: aplication/json или application/xml
     Используется фикстура параметризации с позитивными сценариями.
     """
-    status, result = pf.get_list_of_pets(get_key, filter)
+    status, result, response_headers = pf.get_list_of_pets(get_key, filter)
 
     assert status == 200
     assert len(result['pets']) > 0
+    assert response_headers['Content-Type'] == 'application/json' or 'application/xml'
+
