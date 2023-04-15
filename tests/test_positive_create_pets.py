@@ -11,7 +11,7 @@ from config import generate_string, russian_chars, chinese_chars, special_chars
 def test_add_new_pet_with_valid_data(get_key, name='Рыжик', animal_type='кот',
                                      age='2', pet_photo='images/red.jpg'):
     """
-    Проверяем что можно добавить питомца с корректными данными
+    Тестирование добавления питомца с корректными данными. Проверяем, что ответ имеет статус 200 и
     """
     # Получаем полный путь к файлу с изображением питомца
     pet_photo = os.path.join(os.path.dirname(__file__), pet_photo)
@@ -22,6 +22,9 @@ def test_add_new_pet_with_valid_data(get_key, name='Рыжик', animal_type='к
     # Сверяем статус и результат
     assert status == 200
     assert result['name'] == name
+    assert result['age'] == age
+    assert result['animal_type'] == animal_type
+    assert 'data:image/' in result['pet_photo']
     assert response_headers['Content-Type'] == 'application/json' or 'application/xml'
 
 
@@ -37,6 +40,8 @@ def test_add_new_pet_without_photo_valid_data(get_key, name='Снежок', anim
     # Сверяем статус и результат
     assert status == 200
     assert result['name'] == name
+    assert result['age'] == age
+    assert result['animal_type'] == animal_type
     assert response_headers['Content-Type'] == 'application/json' or 'application/xml'
 
 
@@ -83,7 +88,7 @@ def test_add_new_pet_without_photo_valid_data(get_key, name='Снежок', anim
     '0',
     '1',
     '50'
-    ], ids=[
+], ids=[
     'age = zero',
     'age = min',
     'age = max'
@@ -103,4 +108,3 @@ def test_add_new_pet_simple(get_key, delete_test_pets, name, animal_type, age):
     assert result['age'] == age
     assert result['animal_type'] == animal_type
     assert response_headers['Content-Type'] == 'application/json' or 'application/xml'
-
