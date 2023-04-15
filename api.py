@@ -10,6 +10,7 @@ class PetFriends:
 
     def __init__(self):
         self.base_url = 'https://petfriends.skillfactory.ru/'
+        self.auth_key = {}
 
     def get_api_key(self, email: str, password: str) -> json:
         """
@@ -26,6 +27,7 @@ class PetFriends:
 
         try:
             result = res.json()
+            self.auth_key = result
         except json.decoder.JSONDecodeError:
             result = res.text
 
