@@ -9,9 +9,11 @@ from tests.test_pet_friends import pf, valid_password, valid_email
 def get_key():
     # Проверяем наличие ключа в переменной класса
     if pf.auth_key:
+        print('\nИспользуем полученный ранее ключ')
         key = pf.auth_key
         return key
     # Если ключ отсутствует, то запрашиваем ключ api
+    print('Получаем ключ с сервера')
     status, key = pf.get_api_key(valid_email, valid_password)
     assert status == 200
     assert 'key' in key
