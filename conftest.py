@@ -5,8 +5,9 @@ import pytest
 from tests.test_pet_friends import pf, valid_password, valid_email
 
 
-@pytest.fixture()
+@pytest.fixture
 def get_key():
+    """ Фикстура получения ключа аутентификации"""
     # Проверяем наличие ключа в переменной класса
     if pf.auth_key:
         print('\nИспользуем полученный ранее ключ')
@@ -18,6 +19,19 @@ def get_key():
     assert status == 200
     assert 'key' in key
     return key
+
+
+@pytest.fixture
+def delete_test_pets(get_key):
+    """ Фикстура для удаления созданных в процессе тестирования питомцев после выполнения тестов """
+    _, my_pets, _ = pf.get_list_of_pets(get_key, 'my_pets')
+    pet_count = len(my_pets['pets'])
+    yield
+    _, my_pets, _ = pf.get_list_of_pets(get_key, 'my_pets')
+    while len(my_pets['pets']) > pet_count:
+        pet_id = my_pets['pets'][0]['id']
+        pf.delete_pet(get_key, pet_id)
+        _, my_pets, _ = pf.get_list_of_pets(get_key, 'my_pets')
 
 
 @pytest.fixture
