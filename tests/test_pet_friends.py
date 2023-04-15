@@ -258,9 +258,10 @@ def test_add_new_pet_without_photo_long_animal_type(get_key, name='Длинно�
     """
 
     # Добавляем питомца с длинным текстом в породе
-    animal_type = 'Очень длинная порода testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttes' \
-                  'ttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest' \
-                  'testtesttesttesttesttesttesttesttesttesttesttesttesttesttest'
+    animal_type = 'Очень длинная порода testtesttesttesttesttesttesttesttesttesttesttest' \
+                  'testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest' \
+                  'testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest' \
+                  'testtesttesttesttesttesttesttesttesttesttesttesttest'
 
     status, result = pf.add_new_pet_without_photo(get_key, name, animal_type, age)
 
