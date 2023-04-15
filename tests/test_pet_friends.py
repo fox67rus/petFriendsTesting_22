@@ -53,9 +53,8 @@ def test_add_new_pet_with_valid_data(log, get_key, name='Рыжик', animal_typ
 def test_successful_update_self_pet_info(get_key, name='Тыковка', animal_type='кошка', age=3):
     """Проверяем возможность обновления информации о питомце"""
 
-    # Получаем ключ auth_key и список своих питомцев
-    # _, auth_key = pf.get_api_key(valid_email, valid_password)
-    _, my_pets = pf.get_list_of_pets(get_key, "my_pets")
+    # Получаем список питомцев пользователя
+    _, my_pets = pf.get_list_of_pets(get_key, 'my_pets')
 
     # Если список не пустой, то пробуем обновить его имя, тип и возраст
     if len(my_pets['pets']) > 0:
@@ -73,8 +72,7 @@ def test_successful_update_self_pet_info(get_key, name='Тыковка', animal_
 def test_successful_delete_self_pet(get_key):
     """Проверяем возможность удаления питомца"""
 
-    # Получаем ключ auth_key и запрашиваем список своих питомцев
-    # _, auth_key = pf.get_api_key(valid_email, valid_password)
+    # Получаем список питомцев пользователя
     _, my_pets = pf.get_list_of_pets(get_key, 'my_pets')
 
     # Проверяем - если список своих питомцев пустой, то добавляем нового и опять запрашиваем список своих питомцев
@@ -87,7 +85,7 @@ def test_successful_delete_self_pet(get_key):
     status, _ = pf.delete_pet(get_key, pet_id)
 
     # Ещё раз запрашиваем список своих питомцев
-    _, my_pets = pf.get_list_of_pets(get_key, "my_pets")
+    _, my_pets = pf.get_list_of_pets(get_key, 'my_pets')
 
     # Проверяем что статус ответа равен 200 и в списке питомцев нет id удалённого питомца
     assert status == 200
@@ -117,8 +115,7 @@ def test_successful_add_pets_correct_photo(get_key, pet_photo='images/dog.jpg'):
     # Получаем полный путь к файлу с изображением питомца
     pet_photo = os.path.join(os.path.dirname(__file__), pet_photo)
 
-    # Получаем ключ auth_key и список своих питомцев
-    # _, auth_key = pf.get_api_key(valid_email, valid_password)
+    # Получаем список своих питомцев
     _, my_pets = pf.get_list_of_pets(get_key, "my_pets")
 
     # Если список не пустой, то пробуем добавить фото
@@ -157,6 +154,7 @@ def test_get_all_pets_with_invalid_key(filter=''):
     assert status == 403
 
 
+@pytest.mark.skip(reason="Баг в продукте - https://petfriends.skillfactory.ru/my_pets")
 @pytest.mark.post
 @pytest.mark.negative
 def test_add_new_pet_without_photo_negative_age(get_key, name='Гав', animal_type='котёнок', age='-2'):
@@ -171,6 +169,7 @@ def test_add_new_pet_without_photo_negative_age(get_key, name='Гав', animal_t
     assert status == 400
 
 
+@pytest.mark.skip(reason="Баг в продукте - https://petfriends.skillfactory.ru/my_pets")
 @pytest.mark.negative
 @pytest.mark.put
 def test_unsuccessful_update_another_user_pet_info(get_key, name='Ниндзя', animal_type='НЛО', age=999):
@@ -192,13 +191,13 @@ def test_unsuccessful_update_another_user_pet_info(get_key, name='Ниндзя',
         raise Exception('Список питомцев пуст')
 
 
+@pytest.mark.skip(reason="Баг в продукте - https://petfriends.skillfactory.ru/my_pets")
 @pytest.mark.negative
 @pytest.mark.put
-@pytest.mark.skip(reason="Баг в продукте")
 def test_unsuccessful_update_self_pet_info_with_empty_type(get_key, name='Кото пёс', animal_type=' ', age=3):
     """Обновление данных питомца: новая порода пустая строка. Ожидается ответ 400"""
 
-    # Получаем ключ auth_key и список своих питомцев
+    # Получаем список своих питомцев
 
     _, my_pets = pf.get_list_of_pets(get_key, "my_pets")
 
@@ -214,9 +213,9 @@ def test_unsuccessful_update_self_pet_info_with_empty_type(get_key, name='Кот
         raise Exception('Список питомцев пуст')
 
 
+@pytest.mark.skip(reason="Баг в продукте - https://petfriends.skillfactory.ru/my_pets")
 @pytest.mark.negative
 @pytest.mark.delete
-@pytest.mark.skip(reason="Баг в продукте")
 def test_unsuccessful_delete_another_user_pet(get_key):
     """Проверяем возможность удаления питомца другого пользователя. Ожидается отказ доступа"""
 
@@ -235,9 +234,9 @@ def test_unsuccessful_delete_another_user_pet(get_key):
     assert status != 200
 
 
+@pytest.mark.skip(reason="Баг в продукте - https://petfriends.skillfactory.ru/my_pets")
 @pytest.mark.negative
 @pytest.mark.post
-@pytest.mark.skip(reason="Баг в продукте")
 def test_add_new_pet_without_photo_empty_name(get_key, name='', animal_type='', age=''):
     """
     Простое добавление питомца (без фото) с пустым именем
@@ -250,9 +249,9 @@ def test_add_new_pet_without_photo_empty_name(get_key, name='', animal_type='', 
     assert status != 200
 
 
+@pytest.mark.skip(reason="Баг в продукте - https://petfriends.skillfactory.ru/my_pets")
 @pytest.mark.negative
 @pytest.mark.post
-@pytest.mark.skip(reason="Баг в продукте - https://petfriends.skillfactory.ru/my_pets")
 def test_add_new_pet_without_photo_long_animal_type(get_key, name='Длиннопородный', age='1'):
     """
     Простое добавление питомца (без фото): порода - текст более 255 символов
