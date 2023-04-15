@@ -12,8 +12,9 @@ def test_get_api_key_for_valid_user(email=valid_email, password=valid_password):
     """
 
     # Отправляем запрос и сохраняем полученный ответ с кодом статуса в status, а текст ответа в result
-    status, result = pf.get_api_key(email, password)
+    status, result, response_headers = pf.get_api_key(email, password)
 
     # Сверяем статус и результат
     assert status == 200
     assert 'key' in result
+    assert response_headers['Content-Type'] == 'application/json' or 'application/xml'
