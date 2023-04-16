@@ -14,7 +14,7 @@ def get_key():
         return key
     # Если ключ отсутствует, то запрашиваем ключ api
     print('Получаем ключ с сервера')
-    status, key, response_headers = pf.get_api_key(valid_email, valid_password)
+    status, key, _, _ = pf.get_api_key(valid_email, valid_password)
     assert status == 200
     assert 'key' in key
     return key
