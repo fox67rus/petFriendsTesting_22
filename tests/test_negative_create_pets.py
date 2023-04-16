@@ -3,35 +3,80 @@ import pytest
 
 from api import pf
 import os
+from config import generate_string, russian_chars, chinese_chars, special_chars
 
 
-@pytest.mark.skip(reason="Баг в продукте - https://petfriends.skillfactory.ru/my_pets")
 @pytest.mark.post
-@pytest.mark.negative
-def test_add_new_pet_without_photo_negative_data(get_key, name='Гав', animal_type='котёнок', age='-2'):
+@pytest.mark.parametrize("name", [''], ids=['name=empty'])
+@pytest.mark.parametrize("animal_type", [''], ids=['animal_type=empty'])
+@pytest.mark.parametrize("age",
+                         [
+                             '',
+                             '-1',
+                             '100',
+                             '1.5',
+                             '2147483647',
+                             '2147483648',
+                             russian_chars(),
+                             russian_chars().upper(),
+                             chinese_chars(),
+                             special_chars()
+                         ], ids=[
+                            'age=empty',
+                            'age=negative',
+                            'age=over max',
+                            'age=float',
+                            'age=max integer',
+                            'age=over max integer',
+                            'age=russian',
+                            'age=RUSSIAN',
+                            'age=chinese',
+                            'age=specials'])
+def test_add_new_pet_without_photo_negative_data(get_key, delete_test_pets, name, animal_type, age):
     """
     Проверяем возможность добавления питомца с отрицательным возрастом. Ожидается код 400
     """
 
     # Добавляем питомца
-    status, result = pf.add_new_pet_without_photo(get_key, name, animal_type, age)
+    status, _, _ = pf.add_new_pet_without_photo(get_key, name, animal_type, age)
 
     # Сверяем статус
     assert status == 400
 
 
 @pytest.mark.post
-def test_add_new_pet_with_negative_data(log, get_key, name='Рыжик', animal_type='кот',
-                                        age='2', pet_photo='images/red.gif'):
+@pytest.mark.parametrize("name", [''], ids=['name=empty'])
+@pytest.mark.parametrize("animal_type", [''], ids=['animal_type=empty'])
+@pytest.mark.parametrize("age", [''], ids=['age=empty'])
+@pytest.mark.parametrize("pet_photo",
+                         [
+                             'images/mini-dog.gif',
+                             'images/photo.txt',
+                             generate_string(10),
+                             russian_chars(),
+                             special_chars(),
+                             '123',
+                             ''
+                         ], ids=[
+                             'pet_photo=gif file',
+                             'pet_photo=txt file',
+                             'pet_photo=english text',
+                             'pet_photo=russian text',
+                             'pet_photo=special chars',
+                             'pet_photo=numbers',
+                             'pet_photo=empty'
+                         ])
+def test_add_new_pet_negative_data(get_key, delete_test_pets, name, animal_type, age, pet_photo):
     """
-    Проверяем что можно добавить питомца с корректными данными
+    Проверяем метод добавления питомцев с различными недопустимыми значениями.
+    Тестовые данные после прохождения тестирования удаляются с помощью фикстуры.
     """
+
     # Получаем полный путь к файлу с изображением питомца
     pet_photo = os.path.join(os.path.dirname(__file__), pet_photo)
 
     # Добавляем питомца
-    status, result = pf.add_new_pet(get_key, name, animal_type, age, pet_photo)
+    status, _, _ = pf.add_new_pet(get_key, name, animal_type, age, pet_photo)
 
-    # Сверяем статус и результат
-    assert status == 200
-    assert result['name'] == name
+    # Сверяем статус
+    assert status == 400
