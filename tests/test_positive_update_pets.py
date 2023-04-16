@@ -121,7 +121,7 @@ def test_successful_update_pet_info(get_key, delete_test_pets, name, animal_type
 
     # Если список пустой, то добавляем питомца без фото для теста
     if len(my_pets['pets']) == 0:
-        pf.add_new_pet_without_photo(get_key, name='Тест', animal_type='тест', age='1')
+        pf.add_new_pet_without_photo(get_key, name='Тестик', animal_type='тест', age='1')
         _, my_pets, _ = pf.get_list_of_pets(get_key, 'my_pets')
 
     # Обновляем информацию питомца
