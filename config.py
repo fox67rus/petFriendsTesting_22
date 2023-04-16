@@ -1,6 +1,9 @@
 valid_email = 'test@qiott.com'
 valid_password = 'Qwerty_123'
 
+invalid_email = 'test@qiott123.com'
+invalid_password = 'some_password'
+
 
 def generate_string(n: int) -> str:
     return "x" * n
