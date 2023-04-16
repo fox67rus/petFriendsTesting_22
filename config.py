@@ -29,21 +29,24 @@ def log_test(func):
         response = func(*args, **kwargs)
         status = str(response[0])
         result = str(response[1])
-        response_headers = str(response[2])
-        with open('log.txt', 'w', encoding='utf8') as f:
-            f.write(f'''Запрос:
-                        ------------------
-                        Заголовки запроса:
-                        Параметры пути: 
-                        Параметры строки:
-                        Тело запроса:                      
-
-                        Ответ:
-                        ------------------
-                        Код ответа: {status}
-                        Тело ответа:
-                        {result}
-                        Заголовки ответа:
-                        {response_headers}
-                    ''')
+        request_headers = str(response[2])
+        response_headers = str(response[3])
+        with open('log.txt', 'a', encoding='utf8') as f:
+            f.write(f'{func.__name__}\n'
+                    f'{func.__doc__}\n'
+                    f'Запрос:\n'
+                    f'------------------\n'
+                    f'Заголовки запроса: {request_headers}\n'
+                    f'Параметры пути:\n'
+                    f'Параметры строки:\n'
+                    f'Тело запроса:\n\n'
+                    f'------------------\n'
+                    f'Ответ:\n'
+                    f'------------------\n'
+                    f'Код ответа: {status}\n'
+                    f'Тело ответа:\n'
+                    f'{result}\n'
+                    f'Заголовки ответа:\n'
+                    f'{response_headers}\n'
+                    f'===================\n\n')
     return wrapper
