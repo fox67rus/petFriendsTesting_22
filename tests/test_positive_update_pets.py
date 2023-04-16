@@ -124,7 +124,8 @@ def test_successful_update_pet_info(get_key, delete_test_pets, name, animal_type
         _, my_pets, _ = pf.get_list_of_pets(get_key, 'my_pets')
 
     # Обновляем информацию питомца
-    status, result, response_headers = pf.update_pet_info(get_key, my_pets['pets'][0]['id'], name, animal_type, age)
+    pet_id = my_pets['pets'][0]['id']
+    status, result, response_headers = pf.update_pet_info(get_key, pet_id, name, animal_type, age)
 
     # Проверяем что статус ответа = 200 и имя питомца соответствует заданному
     assert status == 200
