@@ -32,7 +32,7 @@ class PetFriends:
         except json.decoder.JSONDecodeError:
             result = res.text
 
-        return status, result, response_headers
+        return status, result, response_headers, headers
 
     def get_list_of_pets(self, auth_key: json, filter: str = '') -> json:
         """Метод делает запрос к API сервера с ключом аутентификации в заголовках
