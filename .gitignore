@@ -3,3 +3,4 @@
 /.env
 __pycache__
 /tests/test_time.txt
+/test_time.txt
